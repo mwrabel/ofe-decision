@@ -1,62 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "template.html" %}
 
-<head>
-
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-
-  <title>Landing Page - Start Bootstrap Theme</title>
-
-  <!-- Bootstrap core CSS -->
-  <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Custom fonts for this template -->
-  <link href="/static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
-  <link href="/static/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
-
-  <!-- Custom styles for this template -->
-  <link href="/static/css/landing-page.min.css" rel="stylesheet">
-
-</head>
-
-<body>
-
-  <!-- Navigation -->
-  <nav class="navbar navbar-light bg-light static-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">ZUS czy IKE v1.00</a>
-      <a class="btn btn-primary" href="#">Feedback</a>
-    </div>
-  </nav>
-
+{% block masthead %}
   <!-- Masthead -->
   <header class="masthead text-white text-center">
     <div class="overlay"></div>
     <div class="container">
       <div class="row">
         <div class="col-xl-9 mx-auto">
-          <h1 class="mb-5">Przenieść oszczędności z OFE do IKE, czy ZUS? Wybór jest Twój, tylko skąd wiedzieć która opcja jest lepsza?</h1>
-        </div>
+          <h1 class="mb-5">Kapitał w OFE: przenieść do ZUS, czy do IKE?</h1>
+          <h4 class="mb-5">Policz który wariant jest dla Ciebie korzystniejszy.</h4>
+          </div>
         <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
-          <form>
-            <div class="form-row">
-              <div class="col-12 col-md-9 mb-2 mb-md-0">
-                <input type="email" class="form-control form-control-lg" placeholder="Enter your email...">
-              </div>
-              <div class="col-12 col-md-3">
-                <button type="submit" class="btn btn-block btn-lg btn-primary">Sign up!</button>
-              </div>
-            </div>
-          </form>
+          <button type="submit" class="btn btn-block btn-lg btn-primary">Kalkulator</button>
         </div>
       </div>
     </div>
   </header>
+{% endblock %}
 
+{% block icons_grid %}
   <!-- Icons Grid -->
   <section class="features-icons bg-light text-center">
     <div class="container">
@@ -66,8 +28,8 @@
             <div class="features-icons-icon d-flex">
               <i class="icon-screen-desktop m-auto text-primary"></i>
             </div>
-            <h3>Fully Responsive</h3>
-            <p class="lead mb-0">This theme will look great on any device, no matter the size!</p>
+            <h3>Politycy a Twoja emerytura</h3>
+            <p class="lead mb-0">Cele polityków i Twoje są zupełnie rozbieżne. Niekoniecznie wariant domyślny proponowany przez nich będzie najlepszy dla Ciebie.</p>
           </div>
         </div>
         <div class="col-lg-4">
@@ -75,8 +37,8 @@
             <div class="features-icons-icon d-flex">
               <i class="icon-layers m-auto text-primary"></i>
             </div>
-            <h3>Bootstrap 4 Ready</h3>
-            <p class="lead mb-0">Featuring the latest build of the new Bootstrap 4 framework!</p>
+            <h3>Kto skorzysta z kalkulatora?</h3>
+            <p class="lead mb-0">Dla tych, którzy przemyśleli wszystkie za i przeciw, lecz wciąż nie wiedzą co zrobić.</p>
           </div>
         </div>
         <div class="col-lg-4">
@@ -84,72 +46,63 @@
             <div class="features-icons-icon d-flex">
               <i class="icon-check m-auto text-primary"></i>
             </div>
-            <h3>Easy to Use</h3>
-            <p class="lead mb-0">Ready to use with your own content, or customize the source files!</p>
+            <h3>O mnie</h3>
+            <p class="lead mb-0">Nie lubię ślepo iść za tłumem. Napisałem ten kalkulator dla swoich rodziców, by podjęli lepszą dla nich decyzję. Używasz na własną odpowiedzialność, choć masz moje słowo, że dołożyłem wszelkich starań by rzetelnie oddać sytuację.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
+{% endblock %}
 
+{% block image_showcases %}
   <!-- Image Showcases -->
   <section class="showcase">
     <div class="container-fluid p-0">
       <div class="row no-gutters">
-
         <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('/static/img/bg-showcase-1.jpg');"></div>
         <div class="col-lg-6 order-lg-1 my-auto showcase-text">
-          <h2>Fully Responsive Design</h2>
-          <p class="lead mb-0">When you use a theme created by Start Bootstrap, you know that the theme will look great on any device, whether it's a phone, tablet, or desktop the page will behave responsively!</p>
+          <h2>Wariant domyślny: IKE</h2>
+          <p class="lead mb-0">Państwo potrąca Ci 15% z tytułu opłaty przekształceniowej, a resztę przelewa na specjalnie utworzony rachunek IKE.
+            Tych pieniędzy nie będzie można wycofać przed emeryturą, natomiast będzie można je zainwestować, więc mogą zarówno przynieść zysk, jak i stratę.
+            Ponadto, środki w IKE, niezależnie od tego czy będą zainwestowane, czy nie, będzie podgryzać inflacja.
+            Na tę chwilę Państwo obiecuje, że pieniądze te nie będą dalej opodatkowane. Po osiągnięciu wieku emerytalnego można je wypłacić i zostawić w tej samej inwestycji,
+            jednak trzeba będzie płacić podatek Belki od dalszych zysków. Jeśli skończą się przed śmiercią, to dodatek znika,
+            natomiast niewykorzystane środki podlegają dziedziczeniu.</p>
         </div>
       </div>
       <div class="row no-gutters">
         <div class="col-lg-6 text-white showcase-img" style="background-image: url('/static/img/bg-showcase-2.jpg');"></div>
         <div class="col-lg-6 my-auto showcase-text">
-          <h2>Updated For Bootstrap 4</h2>
-          <p class="lead mb-0">Newly improved, and full of great utility classes, Bootstrap 4 is leading the way in mobile responsive web development! All of the themes on Start Bootstrap are now using Bootstrap 4!</p>
+          <h2>Wariant alternatywny: ZUS</h2>
+          <p class="lead mb-0">Cała wartość rejestru OFE dopisywana jest do Twojego kapitału emerytalnego - bez dodatkowej opłaty zamieniasz fizyczne środki
+            na obietnicę wyższej emerytury. Ten kapitał jest waloryzowany korzystnie, historyczne wskaźniki waloryzacji były znacznie wyższe niż inflacja.
+            Po osiągnięciu wieku emerytalnego ZUS wylicza wysokość świadczenia emerytalnego w oparciu m. in. o zgromadzony kapitał (wliczając jego waloryzację),
+            więc może się to przełożyć na wyższą emeryturę w przyszłości, niż w przypadku wariantu z IKE
+            Emerytura wypłacana jest do końca życia, podlega podatkowi dochodowemu (ale i też kwocie wolnej od podatku) oraz waloryzacji, która powinna być wyższa niż oficjalna inflacja. Nie ma ryzyka przejedzenia całego dodatku z OFE, w zamian środki nie podlegają dziedziczeniu.</p>
         </div>
       </div>
       <div class="row no-gutters">
         <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('/static/img/bg-showcase-3.jpg');"></div>
         <div class="col-lg-6 order-lg-1 my-auto showcase-text">
-          <h2>Easy to Use &amp; Customize</h2>
-          <p class="lead mb-0">Landing Page is just HTML and CSS with a splash of SCSS for users who demand some deeper customization options. Out of the box, just add your content and images, and your new landing page will be ready to go!</p>
+          <h2>Co jest brane pod uwagę przy obliczeniach</h2>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">IKE: po osiągnięciu wieku emerytalnego wycofujemy pieniądze z IKE i trzymamy je w tej samej inwestycji płacąc podatek Belki</li>
+              <li class="list-group-item">ZUS: dla bezpieczeństwa przyjęto, że przyszła stopa waloryzacji kapitału wyniesie 5.2% (średnia waloryzacja kapitału w ostatnich 19 latach wynosila 6.5%, a w ostatnich dwoch latach 8-9%)</li>
+              <li class="list-group-item">Czas trwania życia brany jest z danych dostarczanych przez GUS - w oparciu o nie (i Twoją płeć) wyliczana jest liczba lat na emeryturze</li>
+              <li class="list-group-item">Przy wyliczaniu podatku dochodowego brana jest pod uwagę kwota wolna od podatku oraz odliczenia</li>
+
+            </ul>
         </div>
       </div>
     </div>
   </section>
+{% endblock %}
 
-  <!-- Testimonials -->
-  <section class="testimonials text-center bg-light">
-    <div class="container">
-      <h2 class="mb-5">What people are saying...</h2>
-      <div class="row">
-        <div class="col-lg-4">
-          <div class="testimonial-item mx-auto mb-5 mb-lg-0">
-            <img class="img-fluid rounded-circle mb-3" src="/static/img/testimonials-1.jpg" alt="">
-            <h5>Margaret E.</h5>
-            <p class="font-weight-light mb-0">"This is fantastic! Thanks so much guys!"</p>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="testimonial-item mx-auto mb-5 mb-lg-0">
-            <img class="img-fluid rounded-circle mb-3" src="/static/img/testimonials-2.jpg" alt="">
-            <h5>Fred S.</h5>
-            <p class="font-weight-light mb-0">"Bootstrap is amazing. I've been using it to create lots of super nice landing pages."</p>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="testimonial-item mx-auto mb-5 mb-lg-0">
-            <img class="img-fluid rounded-circle mb-3" src="/static/img/testimonials-3.jpg" alt="">
-            <h5>Sarah W.</h5>
-            <p class="font-weight-light mb-0">"Thanks so much for making these free resources available to us!"</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+{% block testimonials %}
+{% endblock %}
 
+{% block call_to_action %}
   <!-- Call to Action -->
   <section class="call-to-action text-white text-center">
     <div class="overlay"></div>
@@ -162,36 +115,28 @@
           <form method="POST" action="/wynik" id="wynik_form">
             <div class="form-row">
               <div class="col-12 col-md-9 mb-2 mb-md-0">
-                      Jak myślisz, jaką stopę zwrotu będą miały Twoje oszczędności w IKE? [%]<br>
-                      <input type="number" name="r" min="-100" value="4" step="0.01" required><br>
-                      <br>
+                <p>Jak myślisz, jaką stopę zwrotu będą miały Twoje oszczędności w IKE? [%]</p>
+                <input type="number" name="r" min="-100" value="4" step="0.01" required><br><br>
 
-                      Przyjęta stopa inflacji w kolejnych latach [%]<br>
-                      <input type="number" name="inflacja" value="2.5" step="0.01" required><br>
-                      <br>
+                <p>Przyjęta stopa inflacji w kolejnych latach [%]</p>
+                <input type="number" name="inflacja" value="2.5" step="0.01" required><br><br>
 
-                      Prognozowana emerytura (brutto)<br>
-                      <input type="number" name="prognozowana_emerytura_brutto" min="0" step="1.00" required><br>
-                      <br>
+                <p>Prognozowana emerytura (brutto)</p>
+                <input type="number" name="prognozowana_emerytura_brutto" min="0" step="1.00" required><br><br>
 
-                      Suma aktywów zgromadzona w OFE<br>
-                      <input type="number" name="ofe" min="0" step="1.00" required><br>
-                      <br>
+                <p>Suma aktywów zgromadzona w OFE</p>
+                <input type="number" name="ofe" min="0" step="1.00" required><br><br>
 
-                      Płeć<br>
-                      <select name="kobieta" form="wynik_form">
-                          <option value="0">Mężczyzna</option>
-                          <option selected value="1">Kobieta</option>
-                      </select><br>
-                      <br>
+                <p>Płeć</p>
+                <select name="kobieta" form="wynik_form">
+                    <option value="0">Mężczyzna</option>
+                    <option selected value="1">Kobieta</option>
+                </select><br><br>
 
-                      Wiek<br>
-                      <input type="number" name="wiek" min="1" max="65" step="1.00" required><br>
-                      <br>
-
-
+                <p>Wiek</p>
+                <input type="number" name="wiek" min="1" max="65" step="1.00" required>
               </div>
-              <div class="col-12 col-md-3">
+              <div class="col-12 col-md-3 my-auto">
                 <input type="submit" class="btn btn-block btn-lg btn-primary" value="Wyślij">
               </div>
             </div>
@@ -200,58 +145,4 @@
       </div>
     </div>
   </section>
-
-  <!-- Footer -->
-  <footer class="footer bg-light">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
-          <ul class="list-inline mb-2">
-            <li class="list-inline-item">
-              <a href="#">About</a>
-            </li>
-            <li class="list-inline-item">&sdot;</li>
-            <li class="list-inline-item">
-              <a href="#">Contact</a>
-            </li>
-            <li class="list-inline-item">&sdot;</li>
-            <li class="list-inline-item">
-              <a href="#">Terms of Use</a>
-            </li>
-            <li class="list-inline-item">&sdot;</li>
-            <li class="list-inline-item">
-              <a href="#">Privacy Policy</a>
-            </li>
-          </ul>
-          <p class="text-muted small mb-4 mb-lg-0">&copy; Your Website 2019. All Rights Reserved.</p>
-        </div>
-        <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
-          <ul class="list-inline mb-0">
-            <li class="list-inline-item mr-3">
-              <a href="#">
-                <i class="fab fa-facebook fa-2x fa-fw"></i>
-              </a>
-            </li>
-            <li class="list-inline-item mr-3">
-              <a href="#">
-                <i class="fab fa-twitter-square fa-2x fa-fw"></i>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href="#">
-                <i class="fab fa-instagram fa-2x fa-fw"></i>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Bootstrap core JavaScript -->
-  <script src="/static/vendor/jquery/jquery.min.js"></script>
-  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-</body>
-
-</html>
+{% endblock %}

@@ -34,6 +34,8 @@ class Pension:
         self.projekcja_zus = None
         self.suma_dodatku_od_ike = None
         self.suma_dodatku_od_zus = None
+        self.rekomendacja_komentarz = None
+        self.rekomendacja_przewaga = None
 
     def _efektywna_stawka_opodatkowania(self):
         # TODO [LOW] zmienny efektywny pit - (inflacja rośnie, to podatek się zmienia)
@@ -177,8 +179,12 @@ class Pension:
 
         if self.suma_dodatku_od_zus > self.suma_dodatku_od_ike:
             print("Wybranie ZUS zaowocuje średnio o {}% wyższym dodatkiem do emerytury".format(stosunek_zus_do_ike))
+            self.rekomendacja_komentarz = 'ZUS'
+            self.rekomendacja_przewaga = stosunek_zus_do_ike
         elif self.suma_dodatku_od_zus < self.suma_dodatku_od_ike:
             print("Wybranie IKE zaowocuje średnio o {}% wyższym dodatkiem do emerytury".format(stosunek_ike_do_zus))
+            self.rekomendacja_komentarz = 'IKE'
+            self.rekomendacja_przewaga = stosunek_ike_do_zus
         else:
             print("ganz egal")
 

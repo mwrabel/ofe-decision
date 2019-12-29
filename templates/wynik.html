@@ -1,12 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h3>Wyniki</h3>
-<p>Wynik IKE: <b>{{ suma_dodatku_od_ike }}</b>.</p>
-<p>Wynik ZUS: <b>{{ suma_dodatku_od_zus }}</b>.</p>
-</body>
-</html>
+{% extends "template.html" %}
+
+{% block masthead %}
+  <!-- Masthead -->
+  <header class="masthead text-white text-center">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-9 mx-auto">
+          <h1 class="mb-5">Wyniki</h1>
+          <h4 class="mb-5">O ile w sumie wzrośnie (na rękę, po uwzględnieniu inflacji) otrzymane do końca życia świadczenie (zakładając średnią długość trwania życia).</h4>
+          <p>Wybór IKE: <b>{{ suma_dodatku_od_ike }} PLN</b></p>
+          <p>Wybór ZUS: <b>{{ suma_dodatku_od_zus }} PLN</b></p>
+          <p>Wybór <b>{{ rekomendacja_komentarz }}</b> zaowocuje o {{ rekomendacja_przewaga }}% wyższym dodatkiem do przyszłej emerytury</p>
+        </div>
+        <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+          <a class="btn btn-block btn-lg btn-primary" href="/">Wróć do kalkulatora</a>
+        </div>
+      </div>
+    </div>
+  </header>
+{% endblock %}
+
+{% block testimonials %}
+  <!-- Testimonials -->
+  <section class="testimonials text-center bg-light">
+    <div class="container">
+      <h2 class="mb-5">Czego się dowiedzialem w międzyczasie...</h2>
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+            <img class="img-fluid rounded-circle mb-3" src="/static/img/testimonials-1.jpg" alt="">
+            <h5>Waloryzacja kapitału emerytalnego w ZUS to nie to samo co waloryzacja emerytury</h5>
+            <p class="font-weight-light mb-0">Zgromadzony w ZUS kapitał (zapis), co roku jest pomnażany o pewien współczynnik.
+            Zależy on od stosunku ilości pieniędzy wpływających do ZUS do tych wypływających. W poprzednich latach wyglądał on bardzo korzystnie (8-9%, pomyśl o nim jak o oprocentowaniu na lokacie),
+            do czego przyczyniły się: znaczny wzrost pensji minimalnej, wzrost płac, napływ legalnie pracujących imigrantów ORAZ nieco niższa oczekiwana długość życia.
+            Waloryzacja wypłacanej już emerytury, zależy głównie od współczynnika inflacji, a także wzrostu PKB i w ostatnich latach wynosiła około 1-3%.</p>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+            <img class="img-fluid rounded-circle mb-3" src="/static/img/testimonials-2.jpg" alt="">
+            <h5>Spodziewasz się emerytury bliskiej minimalnej? Zignoruj kalkulator!</h5>
+            <p class="font-weight-light mb-0">W ostatnich latach oprócz waloryzacji procentowej już wypłacanej emerytury, istnieje również waloryzacja kwotowa dla najniższych emerytur.
+              Dzięki niej osoby z najniższą emeryturą mogą cieszyć się znacznie wyższą waloryzacją. Jeśli taka polityka zmniejszania nierówności między emerytami będzie kontynuowana
+            w kolejnych latach, może okazać się, że jeśli spodziewasz się emerytury bliskiej minimalnej i masz odpowiedni staż uprawniający Cię do minimalnej emerytury,
+              lepiej nie przeznaczać pieniądzy z OFE na ZUS, bo zwiększenie kapitału emerytalnego i tak nie wpłynie na jej wysokość.</p>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+            <img class="img-fluid rounded-circle mb-3" src="/static/img/testimonials-3.jpg" alt="">
+            <h5>Mężczyznom częściej będzie opłacało się zostawić pieniądze w IKE</h5>
+            <p class="font-weight-light mb-0">Sposób wyliczania emerytury premiuje kobiety. Nie wchodząc w szczegóły, zgromadzony przez Ciebie kapitał dzielony jest przez oczekiwaną dalszą długość
+            życia Polaka w wieku 65 lat. Oczekiwana długość życia kobiety jest większa niż mężczyzny, mimo to kapitał jednego i drugiego dzieli się przez tę samą liczbę miesięcy - obecnie ok. 218.
+            Emerytury Polaków przeżywającyh te 218 miesięcy od 65. r. ż. finansowane są z kapitału tych mniej szczęśliwych. W tej drugiej grupie statystycznie jest więcej mężczyzn, toteż
+            ich emerytura z ZUS jest mniej korzystna.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

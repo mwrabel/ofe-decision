@@ -40,12 +40,17 @@ def wynik():
     suma_dodatku_od_ike = str(int(np.round(pension.suma_dodatku_od_ike, 0)))
     rekomendacja_komentarz = str(pension.rekomendacja_komentarz)
     rekomendacja_przewaga = str(pension.rekomendacja_przewaga)
+    sredni_dodatek_do_emerytury_ike = str(pension.sredni_dodatek_do_emerytury_ike)
+    sredni_dodatek_do_emerytury_zus = str(pension.sredni_dodatek_do_emerytury_zus)
 
     return render_template('wynik.html',
                            suma_dodatku_od_zus=suma_dodatku_od_zus,
                            suma_dodatku_od_ike=suma_dodatku_od_ike,
                            rekomendacja_komentarz=rekomendacja_komentarz,
-                           rekomendacja_przewaga=rekomendacja_przewaga)
+                           rekomendacja_przewaga=rekomendacja_przewaga,
+                           sredni_dodatek_do_emerytury_ike=sredni_dodatek_do_emerytury_ike,
+                           sredni_dodatek_do_emerytury_zus=sredni_dodatek_do_emerytury_zus
+                           )
 
 
 if __name__ == '__main__':

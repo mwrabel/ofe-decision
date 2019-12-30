@@ -36,6 +36,8 @@ class Pension:
         self.suma_dodatku_od_zus = None
         self.rekomendacja_komentarz = None
         self.rekomendacja_przewaga = None
+        self.sredni_dodatek_do_emerytury_ike = None
+        self.sredni_dodatek_do_emerytury_zus = None
 
     def _efektywna_stawka_opodatkowania(self):
         # TODO [LOW] zmienny efektywny pit - (inflacja rośnie, to podatek się zmienia)
@@ -177,6 +179,9 @@ class Pension:
         stosunek_zus_do_ike = round((self.suma_dodatku_od_zus / self.suma_dodatku_od_ike - 1) * 100, 1)
         stosunek_ike_do_zus = round((self.suma_dodatku_od_ike / self.suma_dodatku_od_zus - 1) * 100, 1)
 
+        self.sredni_dodatek_do_emerytury_ike = np.round(self.suma_dodatku_od_ike / 12 / self.oczekiwana_liczba_lat_na_emeryturze , 2)
+        self.sredni_dodatek_do_emerytury_zus = np.round(self.suma_dodatku_od_zus / 12 / self.oczekiwana_liczba_lat_na_emeryturze, 2)
+
         if self.suma_dodatku_od_zus > self.suma_dodatku_od_ike:
             print("Wybranie ZUS zaowocuje średnio o {}% wyższym dodatkiem do emerytury".format(stosunek_zus_do_ike))
             self.rekomendacja_komentarz = 'ZUS'
@@ -202,6 +207,6 @@ class Pension:
         self.podsumowanie()
         
 
-# p = Pension(r=0.04, inflacja=0.025, prognozowana_emerytura_brutto=1200, ofe=11500, kobieta=0, wiek=52)
-# p.main()
+p = Pension(r=0.04, inflacja=0.025, prognozowana_emerytura_brutto=1200, ofe=11500, kobieta=0, wiek=52)
+p.main()
 

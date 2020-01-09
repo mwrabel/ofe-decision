@@ -209,4 +209,3 @@ class Pension:
 
 # p = Pension(r=0.04, inflacja=0.025, prognozowana_emerytura_brutto=1200, ofe=11500, kobieta=0, wiek=52)
 # p.main()
-

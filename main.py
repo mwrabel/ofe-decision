@@ -1,9 +1,8 @@
 # Import
-from flask import Flask, render_template, redirect, request, url_for
+from flask import Flask, render_template, request
 import os
 from zus_czy_ike import Pension
 import numpy as np
-import pandas as pd
 
 # Define app and set Secret Key
 app = Flask(__name__)

@@ -7,11 +7,12 @@
     <div class="container">
       <div class="row">
         <div class="col-xl-9 mx-auto">
-          <h1 class="mb-5">Kapitał w OFE: przenieść do ZUS, czy do IKE?</h1>
+          <h1 class="mb-5">Kapitał w OFE</h1>
+          <h2 class="mb-5">przenieść do ZUS, czy do IKE?</h2>
           <h4 class="mb-5">Zamiast zgadywać, policz który wariant jest dla Ciebie korzystniejszy.</h4>
           </div>
         <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
-          <a class="btn btn-block btn-lg btn-primary" href="#kalkulator">Kalkulator</a>
+          <button class="btn btn-block btn-lg btn-primary" onclick="smoothScroll(document.getElementById('kalkulator'))">Kalkulator</button>
         </div>
       </div>
     </div>
@@ -66,8 +67,8 @@
           <p class="lead mb-0">Państwo potrąca Ci 15% z tytułu opłaty przekształceniowej, a resztę przelewa na specjalnie utworzony rachunek IKE.
             Tych pieniędzy nie będzie można wycofać przed emeryturą, natomiast będzie można je zainwestować, więc mogą zarówno przynieść zysk, jak i stratę.
             Ponadto, środki w IKE, niezależnie od tego czy będą zainwestowane, czy nie, będzie podgryzać inflacja.
-            Na tę chwilę Państwo obiecuje, że pieniądze te nie będą dalej opodatkowane. Po osiągnięciu wieku emerytalnego można je wypłacić i zostawić w tej samej inwestycji,
-            jednak trzeba będzie płacić podatek Belki od dalszych zysków. Jeśli skończą się przed śmiercią, to dodatek znika,
+            Na tę chwilę rząd obiecuje, że pieniądze te nie będą dalej opodatkowane. Po osiągnięciu wieku emerytalnego można je wypłacić i zostawić w tej samej inwestycji,
+            jednak trzeba będzie płacić podatek Belki od dalszych zysków. Jeśli środki skończą się przed śmiercią, to dodatek znika,
             natomiast niewykorzystane środki podlegają dziedziczeniu.</p>
         </div>
       </div>
@@ -76,22 +77,23 @@
         <div class="col-lg-6 my-auto showcase-text">
           <h2>Wariant alternatywny: ZUS</h2>
           <p class="lead mb-0">Cała wartość rejestru OFE dopisywana jest do Twojego kapitału emerytalnego - bez dodatkowej opłaty zamieniasz fizyczne środki
-            na obietnicę wyższej emerytury. Ten kapitał jest waloryzowany korzystnie, historyczne wskaźniki waloryzacji były znacznie wyższe niż inflacja.
+            na obietnicę wyższej emerytury. Ten kapitał jest waloryzowany korzystnie, a historyczne wskaźniki waloryzacji były znacznie wyższe niż inflacja.
             Po osiągnięciu wieku emerytalnego ZUS wylicza wysokość świadczenia emerytalnego w oparciu m. in. o zgromadzony kapitał (wliczając jego waloryzację),
-            więc może się to przełożyć na wyższą emeryturę w przyszłości, niż w przypadku wariantu z IKE
-            Emerytura wypłacana jest do końca życia, podlega podatkowi dochodowemu (ale i też kwocie wolnej od podatku) oraz waloryzacji, która powinna być wyższa niż oficjalna inflacja. Nie ma ryzyka przejedzenia całego dodatku z OFE, w zamian środki nie podlegają dziedziczeniu.</p>
+            więc może się to przełożyć na wyższą emeryturę w przyszłości, niż w przypadku wariantu z IKE.
+            Emerytura wypłacana jest do końca życia, podlega podatkowi dochodowemu (ale i też kwocie wolnej od podatku) oraz waloryzacji, która ustawowo powinna być wyższa niż oficjalna inflacja.
+            Nie ma ryzyka przejedzenia całego dodatku z OFE (emerytura wypłacana jest dożywotnio), w zamian środki nie podlegają dziedziczeniu.</p>
         </div>
       </div>
       <div class="row no-gutters">
         <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('/static/img/bg-showcase-3.jpg');"></div>
         <div class="col-lg-6 order-lg-1 my-auto showcase-text">
-          <h2>Co jest brane pod uwagę przy obliczeniach</h2>
+          <h2>Wybrane założenia przyjęte w obliczeniach</h2>
 
             <ul class="list-group list-group-flush">
-              <li class="list-group-item">IKE: po osiągnięciu wieku emerytalnego wycofujemy pieniądze z IKE i trzymamy je w tej samej inwestycji płacąc podatek Belki</li>
-              <li class="list-group-item">ZUS: dla bezpieczeństwa przyjęto, że przyszła stopa waloryzacji kapitału wyniesie 5.2% (średnia waloryzacja kapitału w ostatnich 19 latach wynosila 6.5%, a w ostatnich dwoch latach 8-9%)</li>
-              <li class="list-group-item">Czas trwania życia brany jest z danych dostarczanych przez GUS - w oparciu o nie (i Twoją płeć) wyliczana jest liczba lat na emeryturze</li>
-              <li class="list-group-item">Przy wyliczaniu podatku dochodowego brana jest pod uwagę kwota wolna od podatku oraz odliczenia</li>
+              <li class="list-group-item">IKE: po osiągnięciu wieku emerytalnego wycofujemy pieniądze z IKE i trzymamy je w tej samej inwestycji płacąc podatek Belki, wypłacając co miesiąc kwotę proporcjonalną do oczekiwanej długości trwania życia</li>
+              <li class="list-group-item">ZUS: dla bezpieczeństwa przyjęto, że przyszła stopa waloryzacji kapitału wyniesie 5.2% (średnia waloryzacja kapitału w ostatnich 19 latach wynosila 6.5%, a w ostatnich dwoch latach nawet 8-9%)</li>
+              <li class="list-group-item">Czas trwania życia brany jest z danych dostarczanych przez GUS - w oparciu o te dane (i Twoją płeć) wyliczana jest liczba lat na emeryturze</li>
+              <li class="list-group-item">Przy wyliczaniu podatku dochodowego brana jest pod uwagę kwota wolna od podatku oraz standardowe odliczenia od emerytury</li>
             </ul>
         </div>
       </div>
@@ -104,8 +106,7 @@
 
 {% block kalkulator %}
   <!-- Call to Action -->
-  <section class="call-to-action text-white text-center">
-    <div id="kalkulator" class="overlay"></div>
+  <section id="kalkulator" class="call-to-action text-white text-center">
     <div class="container">
       <div class="row">
         <div class="col-xl-9 mx-auto">
@@ -115,16 +116,16 @@
           <form method="POST" action="/wynik" id="wynik_form">
             <div class="form-row">
               <div class="col-12 col-md-9 mb-2 mb-md-0">
-                <p>Jak myślisz, jaką roczną stopę zwrotu będzie miała Twója potencjalna inwestycja w IKE? [%]</p>
+                <p>Jak myślisz, jaką roczną stopę zwrotu będzie miała Twoja potencjalna inwestycja w IKE? [%]</p>
                 <input type="number" name="r" min="-100" value="4" step="0.01" required><br><br>
 
                 <p>Przyjęta stopa inflacji w kolejnych latach [%]</p>
                 <input type="number" name="inflacja" value="2.5" step="0.01" required><br><br>
 
-                <p>Prognozowana emerytura (brutto)</p>
+                <p>Prognozowana emerytura (brutto) (w dzisiejszych kwotach)</p>
                 <input type="number" name="prognozowana_emerytura_brutto" min="0" step="1.00" required><br><br>
 
-                <p>Suma aktywów zgromadzona w OFE</p>
+                <p>Suma aktywów w rejestrze OFE</p>
                 <input type="number" name="ofe" min="0" step="1.00" required><br><br>
 
                 <p>Płeć</p>

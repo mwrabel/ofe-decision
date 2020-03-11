@@ -27,13 +27,15 @@ def wynik():
     ofe = float(request.form.get('ofe').replace(',', '.'))
     kobieta = int(request.form.get('kobieta'))
     wiek = int(request.form.get('wiek'))
+    zmiana_wartosci_jednostki_ofe = float(request.form.get('zmiana_wartosci_jednostki_ofe').replace(',', '.'))/100
 
     pension = Pension(r=r,
                       inflacja=inflacja,
                       prognozowana_emerytura_brutto=prognozowana_emerytura_brutto,
                       ofe=ofe,
                       kobieta=kobieta,
-                      wiek=wiek)
+                      wiek=wiek,
+                      zmiana_wartosci_jednostki_ofe=zmiana_wartosci_jednostki_ofe)
     pension.main()
 
     suma_dodatku_od_zus = str(int(np.round(pension.suma_dodatku_od_zus, 0)))

@@ -4,7 +4,7 @@ import numpy as np
 
 
 class Pension:
-    def __init__(self, r, inflacja, prognozowana_emerytura_brutto, ofe, kobieta, wiek):
+    def __init__(self, r, inflacja, prognozowana_emerytura_brutto, ofe, kobieta, wiek, zmiana_wartosci_jednostki_ofe):
         # Contant variables
         self.belka = 0.19
         self.podatek_od_prywatyzacji = 0.15
@@ -14,6 +14,7 @@ class Pension:
         self.r = r  # stopa zwrotu z IKE, default=0.04
         self.inflacja = inflacja  # default=0.025
         self.waloryzacja_emerytur = inflacja + 0.20*0.04  # minimum to oficjalna infl. + 20% realnego wzrostu gosp.
+        self.zmiana_wartosci_jednostki_ofe = zmiana_wartosci_jednostki_ofe
 
         # User data
         self.prognozowana_emerytura_brutto = prognozowana_emerytura_brutto  # wartość nominalna
@@ -122,7 +123,11 @@ class Pension:
         # Stopa waloryzacji jest pochodną rozwoju gospodarczego, założenie 40 percentyla to założenie realistyczne
         # Środki z OFE zapisane są na konto w ZUS, są waloryzowane co roku, aż do momentu przejścia na emeryturę.
         # Ich realna wartość będzie nieco zmniejszona przez inflację, co też jest uwzględnione
-        npv_zus = self.ofe * np.power(self.waloryzacja, self.do_emerytury) / np.power((1 + self.inflacja), self.do_emerytury)
+
+        # cena jednostki OFE nie może być mniejsza, niż wartość tej jednostki na dzień 15 kwietnia 2019
+        # https://subiektywnieofinansach.pl/koronawirus-znow-zaatakowal-oszczednosci-polakow-ceny-akcji-najnizsze-od-pieciu-lat-ale-rzad-moze-wyrowna-spadki-ofe/
+
+        npv_zus = np.max([1/(1+self.zmiana_wartosci_jednostki_ofe) * self.ofe, self.ofe]) * np.power(self.waloryzacja, self.do_emerytury) / np.power((1 + self.inflacja), self.do_emerytury)
 
         # Uwaga: od tego kapitału będzie trzeba zapłacić podatek
         print("Zgromadzony kapitał na ZUS w momencie przejścia na emeryturę wynosi %d PLN na dzisiejsze pieniądze "

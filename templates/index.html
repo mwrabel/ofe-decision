@@ -65,9 +65,9 @@
           <h2>Wariant domyślny: IKE</h2>
           <p class="lead mb-0">Państwo potrąca Ci 15% z tytułu opłaty przekształceniowej, a resztę przelewa na specjalnie utworzony rachunek IKE.
             Tych pieniędzy nie będzie można wycofać przed emeryturą, natomiast będzie można je zainwestować, więc mogą zarówno przynieść zysk, jak i stratę.
-            Ponadto, środki w IKE, niezależnie od tego czy będą zainwestowane, czy nie, będzie podgryzać inflacja.
-            Na tę chwilę rząd obiecuje, że pieniądze te nie będą dalej opodatkowane. Po osiągnięciu wieku emerytalnego można je wypłacić i zostawić w tej samej inwestycji,
-            jednak trzeba będzie płacić podatek Belki od dalszych zysków. Jeśli środki skończą się przed śmiercią, to dodatek znika,
+            Ponadto, środki w IKE, niezależnie od tego jak będą zainwestowane, czy nie, będzie podgryzać inflacja.
+            Na tę chwilę rząd obiecuje, że środki te nie będą dalej opodatkowane. Po osiągnięciu wieku emerytalnego teoretycznie można je wypłacić,
+            lecz trzeba będzie płacić podatek Belki od dalszych zysków. Jeśli środki skończą się przed śmiercią, to dodatek znika,
             natomiast niewykorzystane środki podlegają dziedziczeniu.</p>
         </div>
       </div>
@@ -76,11 +76,14 @@
         <div class="col-lg-6 my-auto showcase-text">
           <h2>Wariant alternatywny: ZUS</h2>
           <p class="lead mb-0">Cała wartość rejestru OFE dopisywana jest do Twojego kapitału emerytalnego - bez dodatkowej opłaty zamieniasz fizyczne środki
-            na obietnicę wyższej emerytury. Ten kapitał jest waloryzowany korzystnie, a historyczne wskaźniki waloryzacji były znacznie wyższe niż inflacja.
+            na obietnicę wyższej emerytury. Ten kapitał historycznie były waloryzowane korzystnie - historyczne wskaźniki waloryzacji były zauważalnie wyższe niż inflacja.
             Po osiągnięciu wieku emerytalnego ZUS wylicza wysokość świadczenia emerytalnego w oparciu m. in. o zgromadzony kapitał (wliczając jego waloryzację),
-            więc może się to przełożyć na wyższą emeryturę w przyszłości, niż w przypadku wariantu z IKE.
+            więc może się to przełożyć na wyższą emeryturę w przyszłości, niż w przypadku wyboru wariantu z IKE.
             Emerytura wypłacana jest do końca życia, podlega podatkowi dochodowemu (ale i też kwocie wolnej od podatku) oraz waloryzacji, która ustawowo powinna być wyższa niż oficjalna inflacja.
-            Nie ma ryzyka przejedzenia całego dodatku z OFE (emerytura wypłacana jest dożywotnio), w zamian środki nie podlegają dziedziczeniu.</p>
+            Nie ma ryzyka przejedzenia całego dodatku z OFE (emerytura wypłacana jest dożywotnio), w zamian środki nie podlegają dziedziczeniu.
+            W przypadku, gdy wartość jednostki OFE spadnie w trakcie wykonywania reforny emerytalnej, do ZUS transferowany jest kapitał z OFE wg wycen z dnia 15 kwietnia 2019r.
+          </p>
+
         </div>
       </div>
       <div class="row no-gutters">
@@ -124,8 +127,11 @@
                 <p>Prognozowana emerytura (brutto) (w dzisiejszych kwotach)</p>
                 <input type="number" name="prognozowana_emerytura_brutto" min="0" step="1.00" required><br><br>
 
-                <p>Suma aktywów w rejestrze OFE</p>
+                <p>Suma aktywów w rejestrze OFE na 15 kwietnia 2019</p>
                 <input type="number" name="ofe" min="0" step="1.00" required><br><br>
+
+                <p>Zmiana wartości jednostki OFE, jaka dokonała się między 1 października 2020, a 15 kwietnia 2019 [%]</p>
+                <input type="number" name="zmiana_wartosci_jednostki_ofe" min=-100 value="-25" step="1" required><br><br>
 
                 <p>Płeć</p>
                 <select name="kobieta" form="wynik_form">

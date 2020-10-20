@@ -4,16 +4,17 @@ import numpy as np
 
 
 class Pension:
-    def __init__(self, r, inflacja, prognozowana_emerytura_brutto, ofe, kobieta, wiek, zmiana_wartosci_jednostki_ofe):
+    def __init__(self, r, r_em, inflacja, prognozowana_emerytura_brutto, ofe, kobieta, wiek, zmiana_wartosci_jednostki_ofe):
         # Contant variables
         self.belka = 0.19
         self.podatek_od_prywatyzacji = 0.15
         self.stawka_pit = 0.17  # na emeryturze
 
         # Assumptions
-        self.r = r  # stopa zwrotu z IKE, default=0.04
+        self.r = r  # nominalna stopa zwrotu z IKE przed emeryturą, default=0.05
+        self.r_em = r_em  # nominalna stopa zwrotu z IKE w czasie emerytury, default=0.02
         self.inflacja = inflacja  # default=0.025
-        self.waloryzacja_emerytur = inflacja + 0.20*0.04  # minimum to oficjalna infl. + 20% realnego wzrostu gosp.
+        self.waloryzacja_emerytur = inflacja + 0.20*0.04  # minimum to oficjalna infl. + 20% realnego wzrostu gosp.  # TODO + jakiś bonus, bo to minimum
         self.zmiana_wartosci_jednostki_ofe = zmiana_wartosci_jednostki_ofe
 
         # User data
@@ -21,14 +22,19 @@ class Pension:
         self.ofe = ofe
         self.kobieta = kobieta
         self.wiek = wiek  # max 65 dla faceta i 60 dla kobiety
-        
-        # Placeholders
+
+        # Computations
         self.efektywna_stawka_opodatkowania = None
+        self._efektywna_stawka_opodatkowania()
         self.oczekiwana_dalsza_dlugosc_zycia = None  # spodziewane lata na emeryturze
-        self.do_emerytury = None
-        self.lat_na_emeryturze_wg_zus = None
-        self.oczekiwana_liczba_lat_na_emeryturze = None
-        self.waloryzacja = None
+        self._oczekiwana_dalsza_dlugosc_zycia()
+
+        # Precomputations
+        self.do_emerytury = 65 - 5*self.kobieta - self.wiek
+        self.lat_na_emeryturze_wg_zus = 18 + 5 * self.kobieta  # TODO dodać zmienność
+        # https://www.money.pl/emerytury/emerytury-gus-ma-jednoczesnie-dobra-i-zla-wiadomosc-dane-dotycza-sredniej-dlugosci-zycia-6363469538014849a.html
+        self.oczekiwana_liczba_lat_na_emeryturze = int(self.wiek + self.oczekiwana_dalsza_dlugosc_zycia - 65 + 5 * self.kobieta)
+        self.waloryzacja = self._waloryzacja()
 
         # Wyniki
         self.projekcja_ike = None
@@ -48,8 +54,22 @@ class Pension:
         self.efektywna_stawka_opodatkowania = 1 - prognozowana_emerytura_netto / self.prognozowana_emerytura_brutto
 
     def _oczekiwana_dalsza_dlugosc_zycia(self):
-        # https://stat.gov.pl/obszary-tematyczne/ludnosc/trwanie-zycia/trwanie-zycia-w-2018-r-,2,13.html
-        life_expectancy = pd.read_csv('data/life_expectancy_gus_2018.csv')
+        # https://stat.gov.pl/obszary-tematyczne/ludnosc/trwanie-zycia/trwanie-zycia-w-2019-roku,2,14.html
+
+        # m
+        ogomez = pd.read_excel('data/tablica_a._tablica_trwania_zycia_2019.xlsx', header=6, sheet_name='ogomez')
+        ogomez = ogomez.rename(columns={'Unnamed: 0': 'age', 'Unnamed: 6': 'life_expectancy_m'})
+        ogomez = ogomez[['age', 'life_expectancy_m']]
+        ogomez = ogomez.set_index('age')
+
+        # k
+        ogokob = pd.read_excel('data/tablica_a._tablica_trwania_zycia_2019.xlsx', header=6, sheet_name='ogokob')
+        ogokob = ogokob.rename(columns={'Unnamed: 0': 'age', 'Unnamed: 6': 'life_expectancy_f'})
+        ogokob = ogokob[['age', 'life_expectancy_f']]
+        ogokob = ogokob.set_index('age')
+
+        life_expectancy = ogomez.join(ogokob, how='left').reset_index()
+
         if self.kobieta == 0:
             life_exp = life_expectancy.loc[life_expectancy['age'] == self.wiek]['life_expectancy_m']
         elif self.kobieta == 1:
@@ -57,33 +77,33 @@ class Pension:
         else:
             life_exp = None
         self.oczekiwana_dalsza_dlugosc_zycia = np.round(float(life_exp))
-    
+
     @staticmethod
     def _waloryzacja():
         # Historyczne wartości waloryzacji kapitału zgromadzonego w ZUS
         hist_waloryzacja = [1.1272, 1.0668, 1.0190, 1.0200, 1.0363, 1.0555, 1.0690, 1.1285, 1.1626, 1.0722, 1.0398,
-                            1.0518, 1.0468, 1.0454, 1.0206, 1.0537, 1.0637, 1.0868, 1.0920]
+                            1.0518, 1.0468, 1.0454, 1.0206, 1.0537, 1.0637, 1.0868, 1.0920, 1.0894]
         # mean_hist_waloryzacja = np.mean(hist_waloryzacja)
         # avg_geom_hist_waloryzacja = np.power(np.prod(hist_waloryzacja), 1/len(hist_waloryzacja))
-        q40 = np.quantile(hist_waloryzacja, 0.4)
+        q50 = np.quantile(hist_waloryzacja, 0.5)
         # plt.plot([int(x) for x in range(2000, 2019)], hist_waloryzacja)
         # plt.title('Stopy waloryzacji kapitału zgromadzonego w ZUS')
-        return q40
+        return q50
 
     def wariant_ike(self):
         # Etap 1: Do emerytury
         # w 1. roku spryw. OFE wartość kapitału spada o 7.5%, reszta pracuje na inwestycji w ramach IKE bez  Belki
         # w 2. roku wartość kapitału topnieje o kolejne 7.5%, ale pracuje na inwestycji w ramach IKE bez podatku Belki
         # w 3. i każdym kolejnym roku do emerytury wartość kapitału rośnie o oczekiwaną stopę zwrotu, bez podatku Belki
-        npv_ike = self.ofe * (1 - self.podatek_od_prywatyzacji / 2) * (1 + self.r) * (1 - self.podatek_od_prywatyzacji / 2) * (1 + self.r) * np.power((1 + self.r), self.do_emerytury - 2)
+        npv_ike = self.ofe * (1 - self.podatek_od_prywatyzacji / 2) * (1 + self.r) * (1 - self.podatek_od_prywatyzacji / 2) * (1 + self.r) * np.power((1 + self.r), self.do_emerytury - 2)  # TODO co jak do emerytury jest mniej niż dwa lata
 
         # W momencie wypłaty środków z IKE ich wartość realna zjadana jest przez inflację,
         # toteż wartość nominalna > realna. Deflator:
         npv_ike = npv_ike / np.power((1 + self.inflacja), self.do_emerytury)
         print("Zgromadzony kapitał na IKE w momencie przejścia na emeryturę wynosi %d PLN na dzisiejsze pieniądze "
-              "(po opodatkowaniu i w cenach z dzisiaj)" % npv_ike)
+              "(po opodatkowaniu)" % npv_ike)
 
-        # Etap 2: Po emeryturze
+        # Etap 2: Po przejściu na emeryturę
         projekcja_ike = pd.Series(range(1, self.oczekiwana_liczba_lat_na_emeryturze + 1), name='rok_emerytury').to_frame()
 
         npv_ike_dyn = npv_ike
@@ -94,10 +114,10 @@ class Pension:
         for rok in range(self.oczekiwana_liczba_lat_na_emeryturze):
             # Kapitał wypłacamy sobie proporcjonalnie do pozostałych lat na emeryturze - np. pozostało nam (stat.)
             # 5 lat, więc wypłacamy sobie 1/5 tego co zostało
-            kapital_rok.append(npv_ike_dyn / (self.oczekiwana_liczba_lat_na_emeryturze - rok))
+            wyplata_z_ike = npv_ike_dyn / (self.oczekiwana_liczba_lat_na_emeryturze - rok)
+            kapital_rok.append(wyplata_z_ike)
             # w międzyczasie, kapitał, który pozostał inwestujemy, ale zżera go nam też inflacja
-            # TODO niższe r na emeryturze
-            npv_ike_dyn = (npv_ike_dyn - npv_ike_dyn / (self.oczekiwana_liczba_lat_na_emeryturze - rok)) * (1 + self.r * (1 - self.belka)) / (1 + self.inflacja)
+            npv_ike_dyn = (npv_ike_dyn - wyplata_z_ike) * (1 + self.r_em * (1 - self.belka)) / (1 + self.inflacja)
             npv_ike_list.append(npv_ike_dyn)
 
         projekcja_ike['npv_ike'] = npv_ike_list
@@ -106,7 +126,7 @@ class Pension:
 
         self.projekcja_ike = projekcja_ike
 
-        print("Efekt wybrania prywatyzacji:")
+        print("Efekt wybrania prywatyzacji: ")
         print("W pierwszym roku emerytury zwiększy nam emeryturę o {} PLN".format(projekcja_ike['ike_dodatek_emerytura'].iloc[0]))
         print("W {}. roku emerytury zwiększy nam emeryturę o {} PLN".format(projekcja_ike.shape[0], projekcja_ike['ike_dodatek_emerytura'].iloc[projekcja_ike.shape[0] - 1]))
         print("Jeśli umrzemy wcześniej niż średnia, wtedy niewykorzystany kapitał jest dziedziczony")
@@ -184,7 +204,7 @@ class Pension:
         stosunek_zus_do_ike = round((self.suma_dodatku_od_zus / self.suma_dodatku_od_ike - 1) * 100, 1)
         stosunek_ike_do_zus = round((self.suma_dodatku_od_ike / self.suma_dodatku_od_zus - 1) * 100, 1)
 
-        self.sredni_dodatek_do_emerytury_ike = np.round(self.suma_dodatku_od_ike / 12 / self.oczekiwana_liczba_lat_na_emeryturze , 2)
+        self.sredni_dodatek_do_emerytury_ike = np.round(self.suma_dodatku_od_ike / 12 / self.oczekiwana_liczba_lat_na_emeryturze, 2)
         self.sredni_dodatek_do_emerytury_zus = np.round(self.suma_dodatku_od_zus / 12 / self.oczekiwana_liczba_lat_na_emeryturze, 2)
 
         if self.suma_dodatku_od_zus > self.suma_dodatku_od_ike:
@@ -199,18 +219,11 @@ class Pension:
             print("ganz egal")
 
     def main(self):
-        # Prepare all variables
-        self._efektywna_stawka_opodatkowania()
-        self._oczekiwana_dalsza_dlugosc_zycia()
-        self.do_emerytury = 65 - 5*self.kobieta - self.wiek
-        self.lat_na_emeryturze_wg_zus = 18 + 5 * self.kobieta  # https://www.money.pl/emerytury/emerytury-gus-ma-jednoczesnie-dobra-i-zla-wiadomosc-dane-dotycza-sredniej-dlugosci-zycia-6363469538014849a.html
-        self.oczekiwana_liczba_lat_na_emeryturze = int(self.wiek + self.oczekiwana_dalsza_dlugosc_zycia - 65 + 5 * self.kobieta)
-        self.waloryzacja = self._waloryzacja()
-        # Compute IKE
         self.wariant_ike()
         self.wariant_zus()
         self.podsumowanie()
         
 
-# p = Pension(r=0.04, inflacja=0.025, prognozowana_emerytura_brutto=1200, ofe=11500, kobieta=0, wiek=52)
+# p = Pension(r=0.05, r_em=0.02, inflacja=0.025, prognozowana_emerytura_brutto=2200, ofe=11500, kobieta=0, wiek=52,
+#             zmiana_wartosci_jednostki_ofe=-0.30)
 # p.main()

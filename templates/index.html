@@ -118,8 +118,11 @@
           <form method="POST" action="/wynik" id="wynik_form">
             <div class="form-row">
               <div class="col-12 col-md-9 mb-2 mb-md-0">
-                <p>Jak myślisz, jaką roczną stopę zwrotu będzie miała Twoja potencjalna inwestycja w IKE? [%]</p>
-                <input type="number" name="r" min="-100" value="4" step="0.01" required><br><br>
+                <p>Jak myślisz, jaką roczną stopę zwrotu będzie miała Twoja potencjalna inwestycja w IKE do czasu przejścia na emeryturę? [%]</p>
+                <input type="number" name="r" min="-100" value="5" step="0.01" required><br><br>
+
+                <p>Roczna stopa zwrotu z IKE w trakcie emerytury [%]</p>
+                <input type="number" name="r_em" min="-100" value="2" step="0.01" required><br><br>
 
                 <p>Przyjęta stopa inflacji w kolejnych latach [%]</p>
                 <input type="number" name="inflacja" value="2.5" step="0.01" required><br><br>

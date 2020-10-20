@@ -22,6 +22,7 @@ def index():
 @app.route('/wynik', methods=['POST'])
 def wynik():
     r = float(request.form.get('r').replace(',', '.'))/100
+    r_em = float(request.form.get('r_em').replace(',', '.')) / 100
     inflacja = float(request.form.get('inflacja').replace(',', '.'))/100
     prognozowana_emerytura_brutto = float(request.form.get('prognozowana_emerytura_brutto').replace(',', '.'))
     ofe = float(request.form.get('ofe').replace(',', '.'))
@@ -30,6 +31,7 @@ def wynik():
     zmiana_wartosci_jednostki_ofe = float(request.form.get('zmiana_wartosci_jednostki_ofe').replace(',', '.'))/100
 
     pension = Pension(r=r,
+                      r_em=r_em,
                       inflacja=inflacja,
                       prognozowana_emerytura_brutto=prognozowana_emerytura_brutto,
                       ofe=ofe,

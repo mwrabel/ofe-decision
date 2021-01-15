@@ -88,6 +88,8 @@ class Pension:
         q50 = np.quantile(hist_waloryzacja, 0.5)
         # plt.plot([int(x) for x in range(2000, 2019)], hist_waloryzacja)
         # plt.title('Stopy waloryzacji kapitału zgromadzonego w ZUS')
+        # 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020
+        hist_inflacja_w_gosp_emer = [1.011, 1.000, 0.994, 0.996, 1.023, 1.018, 1.026, 1.039]
         return q50
 
     def wariant_ike(self):

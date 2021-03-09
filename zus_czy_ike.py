@@ -4,17 +4,18 @@ import numpy as np
 
 
 class Pension:
-    def __init__(self, r, r_em, inflacja, prognozowana_emerytura_brutto, ofe, kobieta, wiek, zmiana_wartosci_jednostki_ofe):
+    def __init__(self, r, r_em, inflacja, prognozowana_emerytura_brutto, ofe, kobieta, wiek,
+                 zmiana_wartosci_jednostki_ofe, stawka_pit):
         # Contant variables
         self.belka = 0.19
         self.podatek_od_prywatyzacji = 0.15
-        self.stawka_pit = 0.17  # na emeryturze
 
         # Assumptions
         self.r = r  # nominalna stopa zwrotu z IKE przed emeryturą, default=0.05
         self.r_em = r_em  # nominalna stopa zwrotu z IKE w czasie emerytury, default=0.02
         self.inflacja = inflacja  # default=0.025
         self.zmiana_wartosci_jednostki_ofe = zmiana_wartosci_jednostki_ofe
+        self.stawka_pit = stawka_pit  # na emeryturze 0.17
 
         # User data
         self.prognozowana_emerytura_brutto = prognozowana_emerytura_brutto  # wartość nominalna
@@ -48,8 +49,9 @@ class Pension:
 
     def _efektywna_stawka_opodatkowania(self):
         # TODO [LOW] zmienny efektywny pit - (inflacja rośnie, to podatek się zmienia)
+        # TODO zmienny PIT - ruchoma kwota wolna od podatku
         skladka_zdrowotna = self.prognozowana_emerytura_brutto * 0.09
-        zaliczka_pit = self.prognozowana_emerytura_brutto * self.stawka_pit - 556.02/12 - self.prognozowana_emerytura_brutto * 0.0775
+        zaliczka_pit = self.prognozowana_emerytura_brutto * self.stawka_pit - 525.12/12 - self.prognozowana_emerytura_brutto * 0.0775
         prognozowana_emerytura_netto = self.prognozowana_emerytura_brutto - skladka_zdrowotna - zaliczka_pit
         self.efektywna_stawka_opodatkowania = 1 - prognozowana_emerytura_netto / self.prognozowana_emerytura_brutto
 
@@ -115,10 +117,10 @@ class Pension:
 
     def wariant_ike(self):
         # Etap 1: Do emerytury
-        # w 1. roku spryw. OFE wartość kapitału spada o 7.5%, reszta pracuje na inwestycji w ramach IKE bez  Belki
-        # w 2. roku wartość kapitału topnieje o kolejne 7.5%, ale pracuje na inwestycji w ramach IKE bez podatku Belki
+        # w 1. roku spryw. OFE wartość kapitału spada o 70%*15%, reszta pracuje na inwestycji w ramach IKE bez  Belki
+        # w 2. roku wartość kapitału topnieje o kolejne 30%*15%, ale pracuje na inwestycji w ramach IKE bez podatku Belki
         # w 3. i każdym kolejnym roku do emerytury wartość kapitału rośnie o oczekiwaną stopę zwrotu, bez podatku Belki
-        npv_ike = self.ofe * (1 - self.podatek_od_prywatyzacji / 2) * (1 + self.r) * (1 - self.podatek_od_prywatyzacji / 2) * (1 + self.r) * np.power((1 + self.r), self.do_emerytury - 2)  # TODO co jak do emerytury jest mniej niż dwa lata
+        npv_ike = self.ofe * (1 - self.podatek_od_prywatyzacji*0.7) * (1 + self.r) * (1 - (self.podatek_od_prywatyzacji*0.3)/(1-self.podatek_od_prywatyzacji)) * (1 + self.r) * np.power((1 + self.r), self.do_emerytury - 2)  # TODO co jak do emerytury jest mniej niż dwa lata
 
         # W momencie wypłaty środków z IKE ich wartość realna zjadana jest przez inflację,
         # toteż wartość nominalna > realna. Deflator:

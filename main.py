@@ -28,7 +28,8 @@ def wynik():
     ofe = float(request.form.get('ofe').replace(',', '.'))
     kobieta = int(request.form.get('kobieta'))
     wiek = int(request.form.get('wiek'))
-    zmiana_wartosci_jednostki_ofe = float(request.form.get('zmiana_wartosci_jednostki_ofe').replace(',', '.'))/100
+    # zmiana_wartosci_jednostki_ofe = float(request.form.get('zmiana_wartosci_jednostki_ofe').replace(',', '.'))/100
+    stawka_pit = float(request.form.get('stawka_pit').replace(',', '.'))/100
 
     pension = Pension(r=r,
                       r_em=r_em,
@@ -37,7 +38,8 @@ def wynik():
                       ofe=ofe,
                       kobieta=kobieta,
                       wiek=wiek,
-                      zmiana_wartosci_jednostki_ofe=zmiana_wartosci_jednostki_ofe)
+                      zmiana_wartosci_jednostki_ofe=0,  # feature temporarily disabled
+                      stawka_pit=stawka_pit)
     pension.main()
 
     suma_dodatku_od_zus = str(int(np.round(pension.suma_dodatku_od_zus, 0)))

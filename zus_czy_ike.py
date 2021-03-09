@@ -4,18 +4,18 @@ import numpy as np
 
 
 class Pension:
-    def __init__(self, r, r_em, inflacja, prognozowana_emerytura_brutto, ofe, kobieta, wiek, zmiana_wartosci_jednostki_ofe):
+    def __init__(self, r, r_em, inflacja, prognozowana_emerytura_brutto, ofe, kobieta, wiek,
+                 zmiana_wartosci_jednostki_ofe, stawka_pit):
         # Contant variables
         self.belka = 0.19
         self.podatek_od_prywatyzacji = 0.15
-        self.stawka_pit = 0.17  # na emeryturze
 
         # Assumptions
         self.r = r  # nominalna stopa zwrotu z IKE przed emeryturą, default=0.05
         self.r_em = r_em  # nominalna stopa zwrotu z IKE w czasie emerytury, default=0.02
         self.inflacja = inflacja  # default=0.025
-        self.waloryzacja_emerytur = inflacja + 0.20*0.04  # minimum to oficjalna infl. + 20% realnego wzrostu gosp.  # TODO + jakiś bonus, bo to minimum
         self.zmiana_wartosci_jednostki_ofe = zmiana_wartosci_jednostki_ofe
+        self.stawka_pit = stawka_pit  # na emeryturze 0.17
 
         # User data
         self.prognozowana_emerytura_brutto = prognozowana_emerytura_brutto  # wartość nominalna
@@ -34,7 +34,8 @@ class Pension:
         self.lat_na_emeryturze_wg_zus = 18 + 5 * self.kobieta  # TODO dodać zmienność
         # https://www.money.pl/emerytury/emerytury-gus-ma-jednoczesnie-dobra-i-zla-wiadomosc-dane-dotycza-sredniej-dlugosci-zycia-6363469538014849a.html
         self.oczekiwana_liczba_lat_na_emeryturze = int(self.wiek + self.oczekiwana_dalsza_dlugosc_zycia - 65 + 5 * self.kobieta)
-        self.waloryzacja = self._waloryzacja()
+        self.waloryzacja_kapitalu = self._waloryzacja(param='kapital')
+        self.waloryzacja_emerytur = self._waloryzacja(param='emerytura')  # minimum to oficjalna infl. + 20% realnego wzrostu gosp. mierzonego wzrostem zarobków + bonus od rządu
 
         # Wyniki
         self.projekcja_ike = None
@@ -48,8 +49,9 @@ class Pension:
 
     def _efektywna_stawka_opodatkowania(self):
         # TODO [LOW] zmienny efektywny pit - (inflacja rośnie, to podatek się zmienia)
+        # TODO zmienny PIT - ruchoma kwota wolna od podatku
         skladka_zdrowotna = self.prognozowana_emerytura_brutto * 0.09
-        zaliczka_pit = self.prognozowana_emerytura_brutto * self.stawka_pit - 556.02/12 - self.prognozowana_emerytura_brutto * 0.0775
+        zaliczka_pit = self.prognozowana_emerytura_brutto * self.stawka_pit - 525.12/12 - self.prognozowana_emerytura_brutto * 0.0775
         prognozowana_emerytura_netto = self.prognozowana_emerytura_brutto - skladka_zdrowotna - zaliczka_pit
         self.efektywna_stawka_opodatkowania = 1 - prognozowana_emerytura_netto / self.prognozowana_emerytura_brutto
 
@@ -79,25 +81,46 @@ class Pension:
         self.oczekiwana_dalsza_dlugosc_zycia = np.round(float(life_exp))
 
     @staticmethod
-    def _waloryzacja():
-        # Historyczne wartości waloryzacji kapitału zgromadzonego w ZUS
-        hist_waloryzacja = [1.1272, 1.0668, 1.0190, 1.0200, 1.0363, 1.0555, 1.0690, 1.1285, 1.1626, 1.0722, 1.0398,
-                            1.0518, 1.0468, 1.0454, 1.0206, 1.0537, 1.0637, 1.0868, 1.0920, 1.0894]
+    def _waloryzacja(param='kapital'):
+        # Historyczne wartości waloryzacji kapitału zgromadzonego w ZUS od 2001 do 2020
+        hist_waloryzacja_kapitalu = [
+            1.1272, 1.0668, 1.0190, 1.0200, 1.0363, 1.0555, 1.0690, 1.1285, 1.1626, 1.0722, 1.0398, 1.0518, 1.0468,
+            1.0454, 1.0206, 1.0537, 1.0637, 1.0868, 1.0920, 1.0894
+        ]
         # mean_hist_waloryzacja = np.mean(hist_waloryzacja)
         # avg_geom_hist_waloryzacja = np.power(np.prod(hist_waloryzacja), 1/len(hist_waloryzacja))
-        q50 = np.quantile(hist_waloryzacja, 0.5)
         # plt.plot([int(x) for x in range(2000, 2019)], hist_waloryzacja)
         # plt.title('Stopy waloryzacji kapitału zgromadzonego w ZUS')
-        # 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020
+
+        # Historyczne wartości inflacji emeryckiej 2013-2020
         hist_inflacja_w_gosp_emer = [1.011, 1.000, 0.994, 0.996, 1.023, 1.018, 1.026, 1.039]
+
+        # Historyczne wartości waloryzacji emerytury ZUS od 2000 do 2020
+        # uwaga: 2005 waloryzacja wstrzymana
+        # uwaga: 2007 wpisano 1.045, ale było 71zł brutto dla każdego
+        # uwaga: 2015 nie mniej niż 36zł brutto
+        # uwaga: 2017 nie mniej niż 10zł brutto
+        hist_waloryzacja_emerytury = [
+            1.0750,
+            1.1270, 1.0700, 1.0370, 1.0180, 1.0000, 1.0620, 1.0450, 1.0650, 1.0610, 1.0462,
+            1.0310, 1.0000, 1.0400, 1.0160, 1.0068, 1.0024, 1.0044, 1.0298, 1.0268, 1.0356,
+            1.0424
+        ]
+        if param == 'kapital':
+            q50 = np.quantile(hist_waloryzacja_kapitalu, 0.5)
+        elif param == 'emerytura':
+            q50 = np.quantile(hist_waloryzacja_emerytury, 0.5)
+        else:
+            q50 = np.nan
+
         return q50
 
     def wariant_ike(self):
         # Etap 1: Do emerytury
-        # w 1. roku spryw. OFE wartość kapitału spada o 7.5%, reszta pracuje na inwestycji w ramach IKE bez  Belki
-        # w 2. roku wartość kapitału topnieje o kolejne 7.5%, ale pracuje na inwestycji w ramach IKE bez podatku Belki
+        # w 1. roku spryw. OFE wartość kapitału spada o 70%*15%, reszta pracuje na inwestycji w ramach IKE bez  Belki
+        # w 2. roku wartość kapitału topnieje o kolejne 30%*15%, ale pracuje na inwestycji w ramach IKE bez podatku Belki
         # w 3. i każdym kolejnym roku do emerytury wartość kapitału rośnie o oczekiwaną stopę zwrotu, bez podatku Belki
-        npv_ike = self.ofe * (1 - self.podatek_od_prywatyzacji / 2) * (1 + self.r) * (1 - self.podatek_od_prywatyzacji / 2) * (1 + self.r) * np.power((1 + self.r), self.do_emerytury - 2)  # TODO co jak do emerytury jest mniej niż dwa lata
+        npv_ike = self.ofe * (1 - self.podatek_od_prywatyzacji*0.7) * (1 + self.r) * (1 - (self.podatek_od_prywatyzacji*0.3)/(1-self.podatek_od_prywatyzacji)) * (1 + self.r) * np.power((1 + self.r), self.do_emerytury - 2)  # TODO co jak do emerytury jest mniej niż dwa lata
 
         # W momencie wypłaty środków z IKE ich wartość realna zjadana jest przez inflację,
         # toteż wartość nominalna > realna. Deflator:
@@ -149,7 +172,7 @@ class Pension:
         # cena jednostki OFE nie może być mniejsza, niż wartość tej jednostki na dzień 15 kwietnia 2019
         # https://subiektywnieofinansach.pl/koronawirus-znow-zaatakowal-oszczednosci-polakow-ceny-akcji-najnizsze-od-pieciu-lat-ale-rzad-moze-wyrowna-spadki-ofe/
 
-        npv_zus = np.max([1/(1+self.zmiana_wartosci_jednostki_ofe) * self.ofe, self.ofe]) * np.power(self.waloryzacja, self.do_emerytury) / np.power((1 + self.inflacja), self.do_emerytury)
+        npv_zus = np.max([1/(1+self.zmiana_wartosci_jednostki_ofe) * self.ofe, self.ofe]) * np.power(self.waloryzacja_kapitalu, self.do_emerytury) / np.power((1 + self.inflacja), self.do_emerytury)
 
         # Uwaga: od tego kapitału będzie trzeba zapłacić podatek
         print("Zgromadzony kapitał na ZUS w momencie przejścia na emeryturę wynosi %d PLN na dzisiejsze pieniądze "
@@ -173,7 +196,7 @@ class Pension:
             # A POTEM ponownie stosujemy deflator sprzed emerytury by wrócić do wartości realnych
             kapital_rok.append(npv_zus_dyn / (self.lat_na_emeryturze_wg_zus - rok) * (1 - self.efektywna_stawka_opodatkowania) / np.power((1 + self.inflacja), self.do_emerytury))
             # w międzyczasie, kapitał, który pozostał inwestujemy, ale zżera go nam też inflacja
-            npv_zus_dyn = (npv_zus_dyn - npv_zus_dyn / (self.lat_na_emeryturze_wg_zus - rok)) * (1 + self.waloryzacja_emerytur) / (1 + self.inflacja)
+            npv_zus_dyn = (npv_zus_dyn - npv_zus_dyn / (self.lat_na_emeryturze_wg_zus - rok)) * self.waloryzacja_emerytur / (1 + self.inflacja)
             npv_zus_list.append(npv_zus_dyn)
 
         projekcja_zus['npv_zus'] = npv_zus_list

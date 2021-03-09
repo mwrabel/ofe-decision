@@ -59,13 +59,13 @@ class Pension:
         # https://stat.gov.pl/obszary-tematyczne/ludnosc/trwanie-zycia/trwanie-zycia-w-2019-roku,2,14.html
 
         # m
-        ogomez = pd.read_excel('data/tablica_a._tablica_trwania_zycia_2019.xlsx', header=5, sheet_name='ogomez', engine='openpyxl')
+        ogomez = pd.read_excel('data/tablica_a._tablica_trwania_zycia_2019.xlsx', header=6, sheet_name='ogomez', engine='openpyxl')
         ogomez = ogomez.rename(columns={'Unnamed: 0': 'age', 'Unnamed: 6': 'life_expectancy_m'})
         ogomez = ogomez[['age', 'life_expectancy_m']]
         ogomez = ogomez.set_index('age')
 
         # k
-        ogokob = pd.read_excel('data/tablica_a._tablica_trwania_zycia_2019.xlsx', header=5, sheet_name='ogokob', engine='openpyxl')
+        ogokob = pd.read_excel('data/tablica_a._tablica_trwania_zycia_2019.xlsx', header=6, sheet_name='ogokob', engine='openpyxl')
         ogokob = ogokob.rename(columns={'Unnamed: 0': 'age', 'Unnamed: 6': 'life_expectancy_f'})
         ogokob = ogokob[['age', 'life_expectancy_f']]
         ogokob = ogokob.set_index('age')

@@ -107,13 +107,13 @@ class Pension:
             1.0424
         ]
         if param == 'kapital':
-            q50 = np.quantile(hist_waloryzacja_kapitalu, 0.5)
+            q = np.quantile(hist_waloryzacja_kapitalu, 0.4)
         elif param == 'emerytura':
-            q50 = np.quantile(hist_waloryzacja_emerytury, 0.5)
+            q = np.quantile(hist_waloryzacja_emerytury, 0.5)
         else:
-            q50 = np.nan
+            q = np.nan
 
-        return q50
+        return q
 
     def wariant_ike(self):
         # Etap 1: Do emerytury

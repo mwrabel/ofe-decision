@@ -8,9 +8,9 @@
       <div class="row">
         <div class="col-xl-9 mx-auto">
           <h1 class="mb-5">Wyniki</h1>
-          <h4 class="mb-5">O ile w sumie wzrośnie (na rękę, po uwzględnieniu inflacji) otrzymane do końca życia świadczenie (zakładając średnią długość trwania życia).</h4>
-          <p>Wybór IKE: <b>{{ sredni_dodatek_do_emerytury_ike }} PLN miesięcznie więcej do czasu wyczerpania środków, pod warunkiem osiągnięcia tej stopy zwrotu, lecz będą one dziedziczone</b></p>
-          <p>Wybór ZUS: <b>{{ sredni_dodatek_do_emerytury_zus }} PLN miesięcznie więcej do końca życia, bez dziedziczenia</b></p>
+          <h4 class="mb-5">O ile w sumie wzrośnie (netto, po uwzględnieniu inflacji) otrzymane do końca życia świadczenie (zakładając średnią długość trwania życia dla danej płci).</h4>
+          <p>Wybór IKE: <b>{{ sredni_dodatek_do_emerytury_ike }} PLN miesięcznie więcej do końca średniej długości trwania życia dla danej płci, a potem okrągłe 0 PLN, lecz w przypadku przedwczesnej śmierci, środki są dziedziczone.</b></p>
+          <p>Wybór ZUS: <b>{{ sredni_dodatek_do_emerytury_zus }} PLN miesięcznie więcej do końca życia, niezależnie od tego jak długo będziemy żyli, lecz bez dziedziczenia w przypadku przedwczesnej śmierci.</b></p>
           <p>Wybór <b>{{ rekomendacja_komentarz }}</b> zaowocuje o {{ rekomendacja_przewaga }}% wyższym dodatkiem do przyszłej emerytury</p>
         </div>
         <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
@@ -35,7 +35,7 @@
             <p class="font-weight-light mb-0">Zgromadzony w ZUS kapitał (wirtualny zapis), co roku jest pomnażany o pewien współczynnik.
             Zależy on od stosunku ilości pieniędzy wpływających do ZUS do tych wypływających. W poprzednich latach wyglądał on bardzo korzystnie (8-9%, pomyśl o nim jak o oprocentowaniu na lokacie),
             do czego przyczyniły się: znaczny wzrost pensji minimalnej, wzrost płac, napływ legalnie pracujących imigrantów, a także nieco niższa oczekiwana długość życia.
-            Waloryzacja wypłacanej już emerytury, zależy głównie od współczynnika inflacji, a także wzrostu PKB i w ostatnich latach wynosiła około 1-3%.</p>
+            Waloryzacja wypłacanej już emerytury, zależy głównie od współczynnika inflacji w gospodarstwach domowych emerytów, a także wzrostu PKB i w ostatnich latach wynosiła około 1-3%.</p>
           </div>
         </div>
         <div class="col-lg-4">
@@ -45,7 +45,7 @@
             <p class="font-weight-light mb-0">W ostatnich latach oprócz waloryzacji procentowej już wypłacanej emerytury, istnieje również waloryzacja kwotowa dla najniższych emerytur.
               Dzięki niej osoby z najniższą emeryturą mogą cieszyć się znacznie wyższą waloryzacją w ujęciu procentowym. Jeśli taka polityka zmniejszania nierówności między emerytami będzie kontynuowana
               w kolejnych latach, może okazać się, że jeśli spodziewasz się emerytury bliskiej minimalnej i masz odpowiedni staż uprawniający Cię do minimalnej emerytury,
-              lepiej nie przeznaczać pieniądzy z OFE na ZUS, bo zwiększenie kapitału emerytalnego i tak nie wpłynie na jej wysokość.</p>
+              lepiej nie przeznaczać pieniądzy z OFE na ZUS, bo zwiększenie kapitału emerytalnego i tak nie zmieni wysokości emerytury.</p>
           </div>
         </div>
         <div class="col-lg-4">
@@ -53,8 +53,8 @@
             <img class="img-fluid rounded-circle mb-3" src="/static/img/testimonials-3.jpg" alt="">
             <h5>Mężczyznom częściej będzie opłacało się zostawić pieniądze w IKE</h5>
             <p class="font-weight-light mb-0">Sposób wyliczania emerytury premiuje kobiety. W dużym skrócie, zgromadzony przez Ciebie kapitał dzielony jest przez oczekiwaną dalszą długość
-              życia Polaka (bez rozróżnienia płci) w wieku 65 lat. Oczekiwana długość życia kobiety jest większa niż mężczyzny, mimo to ich kapitał dzielony jest przez tę samą liczbę miesięcy - obecnie ok. 218.
-              Działa zasada solidarności - emerytury Polaków przeżywającyh co najmniej 218 miesięcy od 65. r. ż. finansowane są z kapitału tych mniej szczęśliwych. W grupie krócej żyjących statystycznie jest więcej mężczyzn,
+              życia Polaka (bez podziału na płeć) w wieku 65 lat. Oczekiwana długość życia kobiety jest większa niż mężczyzny, mimo to ich kapitał dzielony jest przez tę samą liczbę miesięcy - obecnie ok. 218.
+              Działa zasada solidarności - emerytury Polaków przeżywającyh co najmniej 218 miesięcy od 65. r. ż. finansowane są z kapitału tych, co mieli mniej szczęścia. W grupie krócej żyjących statystycznie jest więcej mężczyzn,
               toteż gromadzony w ZUS kapitał ma mniejsze przełożenie na ich przyszłą emeryturę.</p>
           </div>
         </div>

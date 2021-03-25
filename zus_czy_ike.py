@@ -12,6 +12,7 @@ class Pension:
 
         # Assumptions
         self.r = r  # nominalna stopa zwrotu z IKE przed emeryturą, default=0.05
+        # TODO rozbij r na dwa subfundusze
         self.r_em = r_em  # nominalna stopa zwrotu z IKE w czasie emerytury, default=0.02
         self.inflacja = inflacja  # default=0.025
         self.zmiana_wartosci_jednostki_ofe = zmiana_wartosci_jednostki_ofe
@@ -30,8 +31,9 @@ class Pension:
         self._oczekiwana_dalsza_dlugosc_zycia()
 
         # Precomputations
-        self.do_emerytury = 65 - 5*self.kobieta - self.wiek
-        self.lat_na_emeryturze_wg_zus = 18 + 5 * self.kobieta  # TODO dodać zmienność
+        self.do_emerytury = 65 - 5*self.kobieta - self.wiek  # TODO a co jak ktoś już jest starszy niż 65 lat?
+        self.lat_na_emeryturze_wg_zus = int(np.round(204.3/12)) + int(np.round(247.7/12 - 204.3/12)) * self.kobieta  # TODO dodać zmienność
+        # https://stat.gov.pl/sygnalne/komunikaty-i-obwieszczenia/lista-komunikatow-i-obwieszczen/komunikat-w-sprawie-tablicy-sredniego-dalszego-trwania-zycia-kobiet-i-mezczyzn,285,9.html
         # https://www.money.pl/emerytury/emerytury-gus-ma-jednoczesnie-dobra-i-zla-wiadomosc-dane-dotycza-sredniej-dlugosci-zycia-6363469538014849a.html
         self.oczekiwana_liczba_lat_na_emeryturze = int(self.wiek + self.oczekiwana_dalsza_dlugosc_zycia - 65 + 5 * self.kobieta)
         self.waloryzacja_kapitalu = self._waloryzacja(param='kapital')
